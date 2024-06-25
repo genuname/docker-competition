@@ -1,0 +1,39 @@
+# Docker-compose работает с сервисами. 1 сервис = 1 контейнер.
+# Сервисом может быть клиент, сервер, сервер, баз данных и т.д и т.п
+# Раздел, в котором будут описаны сервисы, начинается с ключевого слова 'services'.
+services:
+  nginx: # Название сервиса
+    # Ключевое слово "build" позволяет задать
+    # путь к файлу Dockerfile, который нужно использовать для создания образа.
+    build: # Этом разделе указывается, откуда мы будем тянуть Dockerfile для сборки сервиса
+      context: ./services/nginx # Задаем путь к директории, где находится Dockerfile контейнера NGINX
+    container_name: competition_nginx # Задаем имя контейнера
+    image: competition_nginx 
+    ports: # Здесь мы указываем порты в формате: порт_хоста:порт_в_контейнере
+      - 80:80
+    volumes: # Создаем волюмы, монтируем локальный папки в контейнер
+      - ./public:/var/www/public
+      - ./services/nginx:/etc/nginx/conf.d
+    networks: # Указываем сеть, с которой будем работать контейнер
+      - main_network # Имя сети, см. строчку 34
+
+  php: # Название сервиса
+    # Ключевое слово "build" позволяет задать
+    # путь к файлу Dockerfile, который нужно использовать для создания образа.
+    build: # Этом разделе указывается, откуда мы будем тянуть Dockerfile для сборки сервиса
+      context: ./services/php # Задаем путь к директории, где находится Dockerfile контейнера с PHP и XDEBUG
+    container_name: competition_php # Задаем имя контейнера
+    image: competition_php
+    working_dir: /var/www/public # Задаем рабочую директорию проекта
+    volumes: # Создаем волюмы, монтируем локальный папки в контейнер
+      - ./public:/var/www/public
+    networks: # Указываем сеть, с которой будем работать контейнер
+      - main_network # Имя сети, см. строчку 34
+
+networks:
+  main_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
