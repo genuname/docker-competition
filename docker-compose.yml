@@ -30,6 +30,6 @@ services:
     networks: # Указываем сеть, с которой будем работать контейнер
       - main_network # Имя сети, см. строчку 34
 
-networks:
+networks: # Настройки сети
   main_network:
-    driver: bridge
+    driver: bridge # Тип сети между контейнерами по умолчанию, автоматически назначает IP контейнерам
