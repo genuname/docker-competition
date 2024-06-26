@@ -8,7 +8,6 @@ services:
     build: # Этом разделе указывается, откуда мы будем тянуть Dockerfile для сборки сервиса
       context: ./services/nginx # Задаем путь к директории, где находится Dockerfile контейнера NGINX
     container_name: competition_nginx # Задаем имя контейнера
-    image: competition_nginx 
     ports: # Здесь мы указываем порты в формате: порт_хоста:порт_в_контейнере
       - 80:80
     volumes: # Создаем волюмы, монтируем локальный папки в контейнер
@@ -23,7 +22,6 @@ services:
     build: # Этом разделе указывается, откуда мы будем тянуть Dockerfile для сборки сервиса
       context: ./services/php # Задаем путь к директории, где находится Dockerfile контейнера с PHP и XDEBUG
     container_name: competition_php # Задаем имя контейнера
-    image: competition_php
     working_dir: /var/www/public # Задаем рабочую директорию проекта
     volumes: # Создаем волюмы, монтируем локальный папки в контейнер
       - ./public:/var/www/public
